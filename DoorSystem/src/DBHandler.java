@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import org.json.*;
 
 public class DBHandler {
-
+public static String URL = "http://5dc8a15a.ngrok.com/doorkeepr/rest/";
 	public static String getAddress() {
 		String address = "";
 		try {
 			URL url = new URL(
-					"http://7369bd19.ngrok.com/doorkeepr/rest/getAddress.php?building_id="
+					URL + "getAddress.php?building_id="
 							+ Global.BUILDING_ID);
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					url.openStream()));
@@ -27,7 +27,7 @@ public class DBHandler {
 		try {
 			String jsonString = "";
 			URL url = new URL(
-					"http://7369bd19.ngrok.com/doorkeepr/rest/getNames.php?building_id="
+					URL + "getNames.php?building_id="
 							+ Global.BUILDING_ID);
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					url.openStream()));
@@ -56,7 +56,7 @@ public class DBHandler {
 		try {
 			String jsonString = "";
 			URL url = new URL(
-					"http://7369bd19.ngrok.com/doorkeepr/rest/checkAppointment.php?firstName="
+					URL + "checkAppointment.php?firstName="
 							+ firstName + "&lastName=" + lastName);
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					url.openStream()));
@@ -86,7 +86,7 @@ public class DBHandler {
 	public static void deleteAppointment(String appointmentID) {
 		try {
 			URL url = new URL(
-					"http://7369bd19.ngrok.com/doorkeepr/rest/cancelAppointment.php?id="
+					URL + "cancelAppointment.php?id="
 							+ appointmentID);
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					url.openStream()));
@@ -98,7 +98,7 @@ public class DBHandler {
 	public static void changeStatus(String appointmentID) {
 		try {
 			URL url = new URL(
-					"http://7369bd19.ngrok.com/doorkeepr/rest/changeApptStatus.php?id="
+					URL +"rest/changeApptStatus.php?id="
 							+ appointmentID);
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					url.openStream()));
@@ -112,7 +112,7 @@ public class DBHandler {
 			String visitorFirstName, String visitorLastName) {
 		try {
 			URL url = new URL(
-					"http://7369bd19.ngrok.com/doorkeepr/rest/createRequest.php?phone="
+					URL + "createRequest.php?phone="
 							+ phoneNum + "&firstName=" + visitorFirstName
 							+ "&lastName=" + visitorLastName + "&tenant_id="
 							+ tenantID);

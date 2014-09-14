@@ -1,4 +1,3 @@
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -15,7 +14,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class PhoneNumCtrl implements Initializable {
-	@FXML TextField phoneNumField;
+	@FXML
+	TextField phoneNumField;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -46,12 +46,15 @@ public class PhoneNumCtrl implements Initializable {
 		}
 
 	}
-	public void back(){
-		try{
-		Parent root = (Parent) FXMLLoader.load(getClass()
-				.getResource("phoneNum1.fxml"));
-		Global.STAGE.getScene().setRoot(root);
-		}catch(Exception e){}
+
+	public void back() {
+		try {
+			Parent root = (Parent) FXMLLoader.load(getClass().getResource(
+					"requestEntry1.fxml"));
+			Global.STAGE.getScene().setRoot(root);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void invalidPhoneNum() {
