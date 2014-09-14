@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" styleClass="bg" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AppointmentController">
+  <columnConstraints>
+    <ColumnConstraints />
+    <ColumnConstraints hgrow="ALWAYS" maxWidth="1000" minWidth="10.0" prefWidth="500" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="1000" minWidth="10.0" prefWidth="500" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Text id="bg" fill="#95a5a6" strokeType="OUTSIDE" strokeWidth="0.0" text="GateKeepr" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Agency FB" size="96.0" />
+         </font>
+      </Text>
+      <Text fill="#95a5a6" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Scan your Driver's Liscence" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BASELINE">
+         <font>
+            <Font name="Agency FB" size="42.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="idImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets left="50.0" />
+         </GridPane.margin></ImageView>
+      <Button fx:id="correctBtn" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#correctInfo" styleClass="homeBut" text="Information is Correct" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <GridPane.margin>
+            <Insets right="50.0" />
+         </GridPane.margin>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="rescanBtn" disable="true" mnemonicParsing="false" onAction="#rescan" styleClass="homeBut" text="Rescan" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="50.0" />
+         </GridPane.margin>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </Button>
+      <Text fx:id="firstName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Please" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+         <font>
+            <Font name="Agency FB" size="47.0" />
+         </font>
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin>
+      </Text>
+      <Text fx:id="lastName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Wait" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
+         <font>
+            <Font name="Agency FB" size="46.0" />
+         </font>
+      </Text>
+   </children>
+</GridPane>
