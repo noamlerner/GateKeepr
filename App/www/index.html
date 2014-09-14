@@ -1,0 +1,69 @@
+<!DOCTYPE html><!--HTML5 doctype-->
+<html>
+<head>
+	<title>Doorkeepr</title>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
+	<style type="text/css">
+		/* Prevent copy paste for all elements except text fields */
+		*  { -webkit-user-select:none; -webkit-tap-highlight-color:rgba(255, 255, 255, 0); }
+		input, textarea  { -webkit-user-select:text; }
+		body { background-color:white; color:black }
+	</style>
+	<script src='intelxdk.js'></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <link href = "index.css" rel = "stylesheet">
+
+	<script type="text/javascript">
+		/* This code is used to run as soon as Intel activates */
+		var onDeviceReady=function(){
+		//hide splash screen
+		intel.xdk.device.hideSplashScreen();
+		};
+
+		function checkifLogin(){
+			if(localStorage.getItem('name')){
+				window.location.replace("account.html");
+			}
+		}
+		document.addEventListener("intel.xdk.device.ready",onDeviceReady,false);
+			function attemptLogin(){
+				var name = $('#name').val();
+					password  = $('#password').val();
+
+
+				$.ajax({
+				  type: "GET",
+				  url: "http://7369bd19.ngrok.com/doorkeepr/rest/attemptLogin.php",
+				  data: { name: name, password: password }
+				})
+				  .done(function( data ) {
+				    if(data == true){
+				    	$('#error').html('Please try again');
+				    }else{
+				    	localStorage.setItem('name', name)
+				    	window.location.replace("account.html");
+				    }
+				  });
+			}
+	
+	</script>
+</head>
+<body onload = "checkifLogin()">
+	<!-- content goes here-->
+    <div data-role = "page" id = "loginPage" >
+        <div data-role = "header" id = "header"><span style = "float: left; font-size: 20px;"> <span style = "color:#d35400">Gate</span>keepr<sup style = "font-size: 15px">&#946;eta</sup>  </span></div>
+        
+        <div id = "loginForm" class = "ui-content"> 
+        	<span id = "error" style = "font-size: 10px; color: #e74c3c; text-align: center; padding: 20px">  </span>
+        	<input type="text" data-clear-btn="true" id="name"  placeholder = "Username/Email"> <br />
+        	<input type="password" data-clear-btn="true" id="password"  placeholder ="Password"> <br />
+        	<input type="submit"  name="name"  value = "Sign In" onclick = "attemptLogin()"> <br />
+        </div>
+
+    </div>
+</body>
+</html>

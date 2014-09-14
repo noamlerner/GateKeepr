@@ -1,0 +1,175 @@
+<!DOCTYPE html><!--HTML5 doctype-->
+<html>
+<head>
+	<title>Gatekeepr</title>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
+	<style type="text/css">
+		/* Prevent copy paste for all elements except text fields */
+		*  { -webkit-user-select:none; -webkit-tap-highlight-color:rgba(255, 255, 255, 0); }
+		input, textarea  { -webkit-user-select:text; }
+		body { background-color:white; color:black }
+	</style>
+	<script src='intelxdk.js'></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <link href = "index.css" rel = "stylesheet">
+
+	<script type="text/javascript">
+		/* This code is used to run as soon as Intel activates */
+		var onDeviceReady=function(){
+		//hide splash screen
+		intel.xdk.device.hideSplashScreen();
+		};
+		document.addEventListener("intel.xdk.device.ready",onDeviceReady,false);
+        document.addEventListener('intel.xdk.notification.confirm', receiveConfirm, false);
+
+		var name = localStorage.getItem('name');
+        var id;
+        var tenant_id;
+        var visitor;
+        var alerted = false;
+        var alertEditable = true;
+		$(document).ready(function(){
+
+
+		
+		
+
+		setInterval(refresh, 500);
+		refresh();
+
+});
+
+		function refresh(){
+
+				$.ajax({
+				  type: "GET",
+				  url: "http://7369bd19.ngrok.com/doorkeepr/rest/checkRequests.php",
+				  data: {name: name},
+				})
+				  .done(function( response ) {
+				  	if(response != false){
+				  	var dataArray = jQuery.parseJSON(response);
+				  	$('.ui-content').html("");
+
+
+
+					   for(var i = 0; i < dataArray.length; i++){
+					   		data = dataArray[i];
+					   	if(data.status == 0){
+					   		$('.ui-content').append("<div id = '" + data.id + "' class = 'appointments ui-btn ui-icon-delete ui-btn-icon-right' onclick ='cancel( " + data.id + ")'>" + data.visitor + "<br />" + data.arrival_time + "<br /> </div>");
+					   }else{
+					   		$('.ui-content').append("<div id = '" + data.id + "' class = 'appointments ui-btn ui-icon-delete ui-btn-icon-right' onclick ='cancel( " + data.id + ")'>" + data.visitor + " is inside your building </div>");
+					   	
+						}
+					}
+				}
+
+				  });
+
+
+				  $.ajax({
+				  type: "GET",
+				  url: "http://7369bd19.ngrok.com/doorkeepr/rest/checkCurrentRequests.php",
+				  data: {tenant_id: name},
+				})
+				  .done(function( response ) {
+                    
+                    		
+				  
+
+                         data = jQuery.parseJSON(response);
+                         //alert(data.name);
+ 	
+ 						if(data.tenant_id != undefined){
+ 							if(alertEditable){alerted = false;}
+ 						//intel..notification.beep(5);
+                       // intel.xdk.notification.vibrate();
+                        id = data.id;
+                       // tenant_id = data.tenant_id;
+                    //    visitor = data.visitor;
+                   	if(!alerted){
+                        intel.xdk.notification.confirm("Let " + data.visitor + " in?"  , 'letIn', "Unlock Door", "Yes", "No");
+                        alerted = true;
+                        alertEditable = false;
+                        setTimeout(function(){
+                        	alertEditable = true;
+                        }, 1500);
+
+
+                    }
+                       }
+                       
+                    
+				  });
+		}
+
+		function cancel(id){
+			$.ajax({
+				  type: "GET",
+				  url: "http://7369bd19.ngrok.com/doorkeepr/rest/cancelAppointment.php",
+				  data: { id: id }
+				});
+
+			$('#' + id).remove();
+				  
+		}
+        
+        function receiveConfirm(e)
+        {
+                if( e.id == 'letIn' )
+                {
+                        if( e.success == true && e.answer == true ) 
+                        {
+                            $.ajax({
+                                  type: "GET",
+                                  url: "http://7369bd19.ngrok.com/doorkeepr/rest/deleteRequest.php",
+                                  data: {id: id }
+				            });
+                            $.ajax({
+                                  type: "GET",
+                                  url: "http://7369bd19.ngrok.com/doorkeepr/rest/createAppointment.php",
+                                  data: {visitor: data.visitor, tenant_id: data.tenant_id}
+				            });
+                            
+                              $.ajax({
+                                  type: "GET",
+                                  url: "http://7369bd19.ngrok.com/doorkeepr/rest/sendSMS.php",
+                                  data: {to: data.phone, body: "Access Granted." }
+				            });
+                        }else{
+                            $.ajax({
+                                  type: "GET",
+                                  url: "http://7369bd19.ngrok.com/doorkeepr/rest/deleteRequest.php",
+                                  data: {id: id }
+                                });
+                            
+                            $.ajax({
+                                  type: "GET",
+                                  url: "http://7369bd19.ngrok.com/doorkeepr/rest/sendSMS.php",
+                                  data: {to: data.phone, body: "Access Denied. Guard dogs dispatched." }
+				            });
+                        }
+                }else{
+                    alert("Nah");
+                }
+        }                  
+
+	</script>
+</head>
+<body>
+	<!-- content goes here-->
+    <div data-role = "page" id = "loginPage" >
+        <div data-role = "header" id = "header"><span style = "float: left; font-size: 20px; display: inline-block"> <span style = "color:#d35400">Gate</span>keepr<sup style = "font-size: 15px">&#946;eta</sup>  </span> <span style = "float:right; padding: 0px;"> <a style = "display: inline-block" href="javascript: localStorage.clear(); window.location.replace('index.html');" data-role="button" data-icon="back" data-mini = "true" data-iconpos = "notext" data-inline = "true"></a> </span>
+</div>
+        <center> <h1> Appointments </center> </h1>
+        <div class = "ui-content" style = "word-wrap: break-word;" id = "appointments">
+        	
+        </div>
+
+    </div>
+</body>
+</html>
